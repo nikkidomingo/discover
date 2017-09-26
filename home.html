@@ -1,10 +1,33 @@
 <html>
 	<head>
 		<title>Discover</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="home.css">
 	</head>
 	<body>
-		<p>Discover</p>
-		<div class="user"></div>
+
+		<h1>Discover</h1>
+		<p>Explore new music.</p>
+		
+		<p>Add an artist's name to generate a playlist of tracks from related artist. You can add up to <b>5</b> artists.</p>
+		
+		<div class="input-container">
+			<input class="input-text"type="text">
+			<button class="btn btn-pink">&#10010;</button>
+		</div>
+		
+		<div class="artists-container">
+			<ul>
+				<li class="artist">Ed Sheeran <a>&#10006;</a></li>
+				<li class="artist">James Bay <a>&#10006;</a></li>
+				<li class="artist">JP Cooper <a>&#10006;</a></li>
+				<li class="artist">James Bay <a>&#10006;</a></li>
+				<li class="artist">JP Cooper <a>&#10006;</a></li>
+			</ul>
+		</div>
+
+		<button class="btn btn-blue">Create Playlist</button>
+
 	</body>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script>
