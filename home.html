@@ -12,17 +12,12 @@
 		<p>Add an artist's name to generate a playlist of tracks from related artist. You can add up to <b>5</b> artists.</p>
 		
 		<div class="input-container">
-			<input class="input-text"type="text">
-			<button class="btn btn-pink">&#10010;</button>
+			<input id="input-artist" class="input-text" type="text">
+			<button id="btn-add" class="btn btn-pink">&#10010;</button>
 		</div>
 		
 		<div class="artists-container">
-			<ul>
-				<li class="artist">Ed Sheeran <a>&#10006;</a></li>
-				<li class="artist">James Bay <a>&#10006;</a></li>
-				<li class="artist">JP Cooper <a>&#10006;</a></li>
-				<li class="artist">James Bay <a>&#10006;</a></li>
-				<li class="artist">JP Cooper <a>&#10006;</a></li>
+			<ul id="artists-list">
 			</ul>
 		</div>
 
@@ -64,5 +59,40 @@
                 }
             });
       	}
+
+      	// Add Artist to list
+      	$("#btn-add").click(function() {
+      		var artist = $('#input-artist').val();
+      		console.log(artist);
+      		$.ajax({
+      			url: 'https://api.spotify.com/v1/search?q='+ artist +'&type=artist',
+      			headers: {
+      				'Authorization': 'Bearer ' + access_token
+      			},
+      			success: function(response){
+      				console.log(response);
+      				var artist_items = response.artists.items;
+      				if (artist_items.length == 0) {
+      					alert('Sorry! There’s no artist with that name. Make sure to enter the artist’s exact name.');
+      				} else {
+      					for (i in artist_items) {
+							let artist_name = artist_items[i].name;
+      						if (artist_name.toUpperCase() == artist.toUpperCase()){
+      							console.log(i);
+      							$('#artists-list').append('<li class="artist">'+ artist_name +' <a class="btn-delete">&#10006;</a></li>');
+      							break;
+      						}
+      					}
+      				}
+      				$('#input-artist').val("");
+      			}
+      		});
+      	});
+
+      	// Remove Artist from list
+		$('#artists-list').on('click', '.btn-delete', function() {
+			$(this).closest('li').remove();
+		});
+
 	</script>
 </html>
