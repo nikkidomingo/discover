@@ -6,28 +6,44 @@
 	</head>
 	<body>
 
-		<h1>Discover</h1>
-		<p>Explore new music.</p>
-		
-		<p>Add an artist's name to generate a playlist of tracks from related artist. You can add up to <b>5</b> artists.</p>
-		
-		<div class="input-container">
-			<input id="input-artist" class="input-text" type="text">
-			<button id="btn-add" class="btn btn-pink">&#10010;</button>
-		</div>
-		
-		<div class="artists-container">
-			<ul id="artists-list">
-			</ul>
+		<div class="nav-bar">
+			<h1>Discover</h1>
+			<button class="btn btn-blue">Log out</button>
 		</div>
 
-		<button class="btn btn-blue">Create Playlist</button>
+		<div class="main-container">
 
+			<div class="error-message hidden">
+				<span class="btn-close">&#10006;</span>
+				<b>Oh no!</b> There’s no artist with that name. Make sure to enter the artist’s exact name.
+			</div>
+
+			<h2 class="welcome-title"></h2>
+		
+			<p>Add an artist's name to generate a playlist of tracks from related artist. You can add up to <b>5</b> artists.</p>
+			
+			<div class="input-container">
+				<input id="input-artist" class="input-text" type="text">
+				<button id="btn-add" class="btn btn-pink">&#10010;</button>
+			</div>
+			
+			<div class="artists-container">
+				<ul id="artists-list">
+				</ul>
+			</div>
+
+			<button id="btn-create" class="btn btn-blue">Create Playlist</button>
+
+		</div>
 	</body>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script>
 		
+		// Load data on page load
 		var user = {};
+		var genres = {};
+		var final_genres = [];
+		var final_tracks = [];
 
 		function getHashParams() {
 	        var hashParams = {};
@@ -55,10 +71,12 @@
                 success: function(response) {
                 	console.log('success');
                 	user = response;
-                	$('.user').append("Hello, " + user.display_name + "." );
+                	$('.welcome-title').append("Welcome, " + user.display_name + "." );
                 }
             });
       	}
+
+      	disableButtons();
 
       	// Add Artist to list
       	$("#btn-add").click(function() {
@@ -73,26 +91,142 @@
       				console.log(response);
       				var artist_items = response.artists.items;
       				if (artist_items.length == 0) {
-      					alert('Sorry! There’s no artist with that name. Make sure to enter the artist’s exact name.');
+      					$(".error-message").removeClass( "hidden" );
       				} else {
       					for (i in artist_items) {
 							let artist_name = artist_items[i].name;
-      						if (artist_name.toUpperCase() == artist.toUpperCase()){
+      						if (artist_name.toUpperCase() == artist.toUpperCase() && genres[artist_name] == null){
       							console.log(i);
       							$('#artists-list').append('<li class="artist">'+ artist_name +' <a class="btn-delete">&#10006;</a></li>');
+      							genres[artist_name] = artist_items[i].genres;
+      							disableButtons();
+      							$(".error-message").addClass( "hidden" );
       							break;
-      						}
+      						} 
       					}
+      					$('#input-artist').val("");
       				}
-      				$('#input-artist').val("");
       			}
       		});
       	});
 
       	// Remove Artist from list
 		$('#artists-list').on('click', '.btn-delete', function() {
+			var artist_name = ($(this).closest('li').text()).replace(' ✖','');
+			delete genres[artist_name];
+			console.log(genres);
 			$(this).closest('li').remove();
+
+			disableButtons();
+
 		});
 
+		// Close error message
+		$(".btn-close").click(function() {
+			$(".error-message").addClass( "hidden" );
+		});
+
+		// Disable add button
+		function disableButtons(){
+			if ($('#artists-list li').length >= 5 ) {
+				$("#btn-add").prop('disabled', true);
+			} else {
+				$("#btn-add").prop('disabled', false);
+			}
+
+			if ($('#artists-list li').length == 0) {
+				$("#btn-create").prop('disabled', true);
+			} else {
+				$("#btn-create").prop('disabled', false);
+			}
+		}
+
+		//select random values from list
+		function selectRandom(limit, source){
+			var destination = [];
+			for (i = 0; i < limit; i++) {
+
+			    var index = Math.floor((Math.random() * source.length));
+
+			    while(destination.includes(source[index])){
+			    	index = Math.floor((Math.random() * source.length));
+			    }
+
+				destination = destination.concat(source[index]);
+			}
+
+			return destination;
+		}
+
+
+		// get tracks from api
+		function getTracks(genre, final_tracks){
+			return $.ajax({
+		      	url: 'https://api.spotify.com/v1/search?q=genre%3A%22'+ final_genres[genre] +'%22+tag%3Ahipster&type=track',
+		      	headers: {
+		      			'Authorization': 'Bearer ' + access_token
+		      	},
+		      	success: function(response){
+		      		var all_tracks = response.tracks.items;
+		      		var curr_tracks = selectRandom(5, all_tracks);
+		      		final_tracks = final_tracks.concat(curr_tracks);
+		   		}
+	      	});
+		}
+
+		$('#btn-create').click(function() {
+			var all_genres = [];
+			var final_genres = [];
+			var final_tracks = [];
+			var ajaxList = [];
+
+			// iterate through genres and get one genre from each artist
+			for(var key in genres) {
+				var g = genres[key];
+
+				all_genres = all_genres.concat(g);
+			}
+
+			// filter and select 5 genres
+			all_genres = all_genres.filter(function (el, i, arr){return arr.indexOf(el) === i;});
+			final_genres = selectRandom(5, all_genres);
+
+			for (g in final_genres) {
+				ajaxList = ajaxList.concat(getTracks(g, final_tracks));
+			}
+
+			$.when.apply($, ajaxList).then(function(){
+				console.log(final_tracks);
+				//post request to  create playlist
+				//send final_tracks to the next page
+				//add tracks on page load
+
+
+				//OR
+
+				//post request to create playlist
+				//add tracks
+				//send to next
+
+				// $.ajax({
+				// 	url: 'https://api.spotify.com/v1/users/'+ user.id +'/playlists',
+				// 	type: 'post',
+				// 	dataType: 'json',
+				// 	data: {
+				// 	 "description": "New playlist from Discover",
+				// 	  "public": false,
+				// 	  "name": "New Playlist from Discover"
+				// 	},
+				// 	headers: {
+				// 		'Authorization': 'Bearer ' + access_token
+				// 	},
+				// 	success: function(response){
+				// 		console.log('created playlist');
+				// 		console.log(response);
+				// 	}
+				// });
+			});
+
+		});
 	</script>
 </html>

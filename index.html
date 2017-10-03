@@ -2,11 +2,13 @@
 	<head>
 		<title>Discover</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="home.css">
+		<link rel="stylesheet" href="login.css">
 	</head>
 	<body>
-		<h1>Discover</h1>
-		<p>Explore new music.</p>
+		<div class="title">
+			<h1>Discover</h1>
+			<p>Explore new music.</p>
+		</div>
 		<button id="btn-login" class="btn btn-pink">Sign in to Spotify</button>
 	</body>
 	<script>
@@ -26,7 +28,7 @@
 			var client_id = '81e5851e3ad2464a941fdd04636a647a';
 			var redirect_uri = 'http://localhost:3000/home.html';
 			var state = generateRandomString(16);
-			var scope = 'user-read-private user-read-email';
+			var scope = 'user-read-private user-read-email playlist-modify-public playlist-modify-private';
 
 			var url = 'https://accounts.spotify.com/authorize';
 			url += '?response_type=token';
