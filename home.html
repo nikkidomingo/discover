@@ -160,19 +160,6 @@
 
 
 		// get tracks from api
-		function getTracks(genre, final_tracks){
-			return $.ajax({
-		      	url: 'https://api.spotify.com/v1/search?q=genre%3A%22'+ final_genres[genre] +'%22+tag%3Ahipster&type=track',
-		      	headers: {
-		      			'Authorization': 'Bearer ' + access_token
-		      	},
-		      	success: function(response){
-		      		var all_tracks = response.tracks.items;
-		      		var curr_tracks = selectRandom(5, all_tracks);
-		      		final_tracks = final_tracks.concat(curr_tracks);
-		   		}
-	      	});
-		}
 
 		$('#btn-create').click(function() {
 			var all_genres = [];
@@ -191,40 +178,47 @@
 			all_genres = all_genres.filter(function (el, i, arr){return arr.indexOf(el) === i;});
 			final_genres = selectRandom(5, all_genres);
 
+			function getTracks(genre){
+				return $.ajax({
+			      	url: 'https://api.spotify.com/v1/search?q=genre%3A%22'+ final_genres[genre] +'%22+tag%3Ahipster&type=track',
+			      	headers: {
+			      			'Authorization': 'Bearer ' + access_token
+			      	},
+			      	success: function(response){
+			      		var all_tracks = response.tracks.items;
+			      		var curr_tracks = selectRandom(5, all_tracks);
+			      		final_tracks = final_tracks.concat(curr_tracks);
+			   		}
+		      	});
+			}
+
 			for (g in final_genres) {
-				ajaxList = ajaxList.concat(getTracks(g, final_tracks));
+				ajaxList = ajaxList.concat(getTracks(g));
 			}
 
 			$.when.apply($, ajaxList).then(function(){
 				console.log(final_tracks);
-				//post request to  create playlist
-				//send final_tracks to the next page
-				//add tracks on page load
-
-
-				//OR
-
 				//post request to create playlist
 				//add tracks
 				//send to next
 
-				// $.ajax({
-				// 	url: 'https://api.spotify.com/v1/users/'+ user.id +'/playlists',
-				// 	type: 'post',
-				// 	dataType: 'json',
-				// 	data: {
-				// 	 "description": "New playlist from Discover",
-				// 	  "public": false,
-				// 	  "name": "New Playlist from Discover"
-				// 	},
-				// 	headers: {
-				// 		'Authorization': 'Bearer ' + access_token
-				// 	},
-				// 	success: function(response){
-				// 		console.log('created playlist');
-				// 		console.log(response);
-				// 	}
-				// });
+				$.ajax({
+					url: 'https://api.spotify.com/v1/users/'+ user.id +'/playlists',
+					type: 'post',
+					dataType: 'json',
+					data: JSON.stringify({
+					 "description": "New playlist from Discover",
+					  "public": false,
+					  "name": "New Playlist from Discover"
+					}),
+					headers: {
+						'Authorization': 'Bearer ' + access_token
+					},
+					success: function(response){
+						console.log('created playlist');
+						console.log(response);
+					}
+				});
 			});
 
 		});

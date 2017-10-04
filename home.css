@@ -208,6 +208,22 @@ li a:hover {
 	margin: 20px 0;
 }
 
+.featured-list {
+	text-align: center;
+}
+
+.featured {
+	/*background: white;*/
+	text-align: center;
+	padding: 0 10px;
+}
+
+.featured img {
+	border-radius: 50%;
+}
+
+
+
 @media all and (min-width: 426px) {
 	.nav-bar,
 	.main-container{
@@ -221,9 +237,43 @@ li a:hover {
 		width:60%;
 	}
 
+	.playlist-container {
+		display: inline-block;
+		width:30%;
+		position:fixed;
+	}
+
+	.main-playlist-container{
+		width:90%;
+		margin:auto;
+	}
+
+	.playlist {
+		max-width: 300px;
+		height:50vh;
+	}
+
+	.featured-container {
+		display: inline-block;
+		width:55%;
+		float: right;
+	}
+
+	.featured-list {
+		text-align: left;
+	}
+
 }
 @media all and (min-width: 1024px) {
 	.main-container{
+		width:50%;
+	}
+	.main-playlist-container{
+		width:80%;
+	}
+
+	.featured-container {
+		display: inline-block;
 		width:50%;
 	}
 }
@@ -231,5 +281,10 @@ li a:hover {
 @media all and (min-width: 1440px) {
 	.main-container{
 		width:30%;
+	}
+
+	.featured-container {
+		display: inline-block;
+		width:60%;
 	}
 }
