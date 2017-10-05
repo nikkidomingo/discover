@@ -178,7 +178,7 @@ li a:hover {
 
 .playlist-title {
 	margin:20px 5%;
-
+	max-width: 300px;
 }
 
 .playlist-title h2 {
@@ -213,15 +213,21 @@ li a:hover {
 }
 
 .featured {
-	/*background: white;*/
 	text-align: center;
 	padding: 0 10px;
 }
 
 .featured img {
+	width: 160px;
+	height: 160px;
+	position:relative;
+	overflow: hidden;
 	border-radius: 50%;
 }
 
+.featured a {
+	color: #626262;
+}
 
 
 @media all and (min-width: 426px) {
