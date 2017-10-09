@@ -36,6 +36,12 @@ if (!access_token) {
     });
 }
 
+function showErrorMessage(message){
+	$(".error-message").empty();
+  	$(".error-message").append(message);
+	$(".error-message").removeClass( "hidden" );
+}
+
 //select random values from list
 function selectRandom(limit, source){
 	var destination = [];
@@ -80,15 +86,22 @@ function createPlaylist(){
 		}
 	}
 
-	if (final_genres.length > 3){
-		final_genres = selectRandom(3, final_genres);
+	if (final_genres.length == 0) {
+
+		showErrorMessage('<b>Sorry!</b> The artists you entered have no simililar genres. Please enter a different set of artists.');
+
+	} else {
+
+		if (final_genres.length > 3){
+			final_genres = selectRandom(3, final_genres);
+		}
+
+		console.log(final_genres);
+		console.log(final_genres.join());
+		localStorage['final_genres'] = JSON.stringify(final_genres);
+
+		getTracks(final_genres);
 	}
-
-	console.log(final_genres);
-	console.log(final_genres.join());
-	localStorage['final_genres'] = JSON.stringify(final_genres);
-
-	getTracks(final_genres);
 
 	function getTracks(genre){
 		return $.ajax({

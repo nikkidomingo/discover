@@ -6,19 +6,26 @@
 	</head>
 	<body>
 
-		<div class="nav-bar">
-			<h1>Discover</h1>
-			<button class="btn btn-blue">Log out</button>
+		<div class="nav-bar-container">
+			<div class="nav-bar">
+				<h1>Discover</h1>
+				<button class="btn btn-blue">Log out</button>
+				<!-- <a href="https://www.spotify.com/logout/" class="btn btn-blue">Log out</a> -->
+			</div>
 		</div>
 
 		<div class="main-playlist-container">
 			<div class="playlist-container">
 				<div class="playlist-title">
-					<h2>Here is you new playlist.</h2>
-					<p class="playlist-desc"></p>
+					<h2>Here is your new playlist.</h2>
+					<p class="playlist-desc">Your playlist is automatically saved on your Spotify account.</p>
 				</div>
 			</div>
 			<div class="featured-container">
+				<h2>Genres on this playlist</h2>
+				<ul id="genres">
+					
+				</ul>
 				<h2>Tracks inspired from</h2>
 				<ul class="featured-list" id="main-artists">
 				</ul>
@@ -41,14 +48,21 @@
 
 		var playlist_frame = '<iframe class="playlist" src="https://open.spotify.com/embed?uri='+ playlist.uri +'&theme=white" frameborder="0" allowtransparency="true"></iframe>';
 
-		$('.playlist-desc').append("<p>Your playlist contains songs from the following genres: <b>"+ final_genres.join(", ") +"</b></p>");
+		for (i in final_genres){
+			$('#genres').append('<li class="genres-list">'+final_genres[i]+'</li>')
+		}
 		$('.playlist-container').append(playlist_frame)
 
 		for (artist in artists) {
-			let img_src = artists[artist].images[2].url;
+			let img_src = artists[artist].images[0];
 			let link = artists[artist].external_urls.spotify;
 
-			$('#main-artists').append('<li class="featured"><img src="' + img_src + '" alt="'+ artist +'"><h3>'+ artist +'</h3></li>');
+			if(img_src.height < img_src.width){
+				$('#main-artists').append('<li class="featured"><a href="'+ link +'" target="_blank" ><div class="img-crop"><img src="' + img_src.url + '" alt="'+ artist +'"></div><h3>'+ artist +'</h3></a></li>');
+			} else {
+				$('#main-artists').append('<li class="featured"><a href="'+ link +'" target="_blank" ><div class="img-crop"><img class="portrait" src="' + img_src.url + '" alt="'+ artist +'"></div><h3>'+ artist +'</h3></a></li>');
+			}
+
 		}
 
 
@@ -63,11 +77,15 @@
 				},
 				success: function(response){
 					console.log(response);
-					let img_src = response.images[0].url;
+					let img_src = response.images[0];
 					let link = response.external_urls.spotify;
 					let artist_name = response.name;
 
-					$('#featured-artists').append('<li class="featured"><img src="' + img_src + '" alt="'+ artist_name +'"><a href="'+ link +'" target="_blank" ><h3>'+ artist_name +'</h3></a></li>');
+					if(img_src.height < img_src.width){
+						$('#featured-artists').append('<li class="featured"><a href="'+ link +'" target="_blank" ><div class="img-crop"><img src="' + img_src.url + '" alt="'+ artist_name +'"></div><h3>'+ artist_name +'</h3></a></li>');	
+					} else {
+						$('#featured-artists').append('<li class="featured"><a href="'+ link +'" target="_blank" ><div class="img-crop"><img class="portrait" src="' + img_src.url + '" alt="'+ artist_name +'"></div><h3>'+ artist_name +'</h3></a></li>');	
+					}
 				}
 			});
 		}
@@ -80,15 +98,3 @@
 		console.log(playlist_artists);
 	</script>
 </html>
-
-<!-- 
-
-THINGS LEFT TO DO
-x collect tracks
-- create playlist
-- add tracks to playlist
-
-
-BUGS
-- it hangs if all_genres is less than 5
- -->

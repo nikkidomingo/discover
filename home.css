@@ -10,7 +10,7 @@ html, body {
 body {
 	background-color: #F4EADE;
 	font-family: 'Open Sans', sans-serif;
-	font-size: 12px;
+	font-size: 14px;
 	color: #626262;
 }
 
@@ -25,7 +25,7 @@ h1 {
 }
 
 h2 {
-	font-size: 20px;
+	font-size: 25px;
 	font-weight: 700;
 	font-style: italic;
 	color: #171662;
@@ -44,7 +44,7 @@ p {
 	padding:8px 13px;
 	background-color: #DE8C72;
 	text-transform: uppercase;
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: 800;
 	color: #ffffff;
 	border: none;
@@ -68,6 +68,10 @@ p {
 	color: #DE8C72;
 }
 
+#btn-add {
+	height: 50px;
+}
+
 .btn:disabled {
 	background-color: #A2A2A2;
 	color: #f2f2f2;
@@ -76,16 +80,24 @@ p {
 .btn-close {
 	float: right;
 	cursor: pointer;
-	 margin-left: 30px;
+	margin-left: 30px;
 }
 
 /*HOME*/
+
+.nav-bar-container{
+	/*display:block;*/
+	background-color: #f6f6f6;
+	box-shadow: 1px 1px 10px #686868;
+
+	/*position:fixed;*/
+}
 
 .nav-bar {
 	display:block;
 	width:90%;
 	margin:auto;
-	padding: 20px 0px;
+	padding: 10px 0px;
 }
 
 .nav-bar h1 {
@@ -127,12 +139,15 @@ p {
 
 .input-text {
 	padding:10px 15px;
-	font-size: 12px;
+	font-size: 18px;
 	background-color: transparent;
 	color:#DE8C72;
 
 	border:none;
 	border-bottom: 1px solid #DE8C72;
+
+	width: 80%;
+	height:50px;
 }
 
 .input-text:focus {
@@ -141,7 +156,7 @@ p {
 
 
 .artists-container{
-	margin: 20px;
+	margin: 20px 0;
 	max-width: 500px;
 }
 
@@ -177,12 +192,13 @@ li a:hover {
 /*PLAYLIST*/
 
 .playlist-title {
-	margin:20px 5%;
+	margin:20px 0;
 	max-width: 300px;
 }
 
 .playlist-title h2 {
-	margin: 5px 0;
+	/*margin: 5px 0;*/
+	font-size: 25px;
 }
 
 
@@ -203,6 +219,18 @@ li a:hover {
 	width: 100%;
 }
 
+.genres-list{
+	background-color: #DE8C72;
+	color: #ffffff;
+
+	font-size: 16px;
+
+	padding: 10px 15px;
+	margin: 5px 5px;
+
+	border-radius: 10px;
+}
+
 .featured-container{
 	width: 100%;
 	margin: 20px 0;
@@ -215,14 +243,40 @@ li a:hover {
 .featured {
 	text-align: center;
 	padding: 0 10px;
+	max-width: 150px;
+	vertical-align: top;
 }
 
-.featured img {
-	width: 160px;
-	height: 160px;
-	position:relative;
-	overflow: hidden;
-	border-radius: 50%;
+.featured:hover {
+	width:160px;
+}
+
+.img-crop:hover {
+	width:160px;
+	height:160px;
+}
+
+.img-crop {
+	width: 150px;
+    height: 150px;
+    position: relative;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    overflow: hidden;
+	transition: all 0.2s linear;
+}
+
+.img-crop img {
+	left: 50%;
+	top: 50%;
+	height: 100%;
+	width: auto;
+}
+
+.img-crop img.portrait {
+	width: 100%;
+	height: auto;
 }
 
 .featured a {
@@ -238,6 +292,10 @@ li a:hover {
 }
 
 @media all and (min-width: 768px){
+	h2 {
+		font-size: 30px;
+	}
+	
 	.nav-bar,
 	.main-container{
 		width:60%;

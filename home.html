@@ -5,10 +5,12 @@
 		<link rel="stylesheet" href="home.css">
 	</head>
 	<body>
-
-		<div class="nav-bar">
-			<h1>Discover</h1>
-			<button class="btn btn-blue">Log out</button>
+		<div class="nav-bar-container">
+			<div class="nav-bar">
+				<h1>Discover</h1>
+				<button class="btn btn-blue">Log out</button>
+				<!-- <a href="https://www.spotify.com/logout/" class="btn btn-blue">Log out</a> -->
+			</div>
 		</div>
 
 		<div class="main-container">
@@ -19,13 +21,13 @@
 			</div>
 
 			<h2 class="welcome-title"></h2>
-		
-			<p>Add an artist's name to generate a playlist of tracks from related artist. You can add up to <b>5</b> artists.</p>
+			<p><i>Discover</i> allows you to find music that seldom get heard.</p>
+			<p>Add an artist's name to generate a playlist of tracks from related artist. You can add <b>2-5</b> artists.</p>
 			
-			<div class="input-container">
-				<input id="input-artist" class="input-text" type="text">
-				<button id="btn-add" class="btn btn-pink">&#10010;</button>
-			</div>
+			<form class="input-container">
+				<input id="input-artist" class="input-text" type="text"  autocomplete="off">
+				<input type="submit" value="&#10010;" id="btn-add" class="btn btn-pink">
+			</form>
 			
 			<div class="artists-container">
 				<ul id="artists-list">
@@ -43,7 +45,7 @@
       	disableButtons();
 
       	// Add Artist to list
-      	$("#btn-add").click(function() {
+      	$("form").submit(function() {
       		var artist = $('#input-artist').val();
       		console.log(artist);
       		$.ajax({
@@ -55,20 +57,31 @@
       				console.log(response);
       				var artist_items = response.artists.items;
       				if (artist_items.length == 0) {
-      					$(".error-message").removeClass( "hidden" );
+      					showErrorMessage('<b>Oh no!</b> There’s no artist with that name. Make sure to enter the artist’s exact name.');
+      					console.log('null');
       				} else {
       					for (i in artist_items) {
+      						console.log(artist_items[i]);
 							let artist_name = artist_items[i].name;
-      						if (artist_name.toUpperCase() == artist.toUpperCase() && genres[artist_name] == null){
-      							console.log(i);
-      							$('#artists-list').append('<li class="artist">'+ artist_name +' <a class="btn-delete">&#10006;</a></li>');
-      							genres[artist_name] = artist_items[i].genres;
-      							artists[artist_name] = artist_items[i];
-      							console.log(genres);
-      							disableButtons();
-      							$(".error-message").addClass( "hidden" );
-      							break;
-      						} 
+							if (artist_name.toUpperCase() == artist.toUpperCase()){
+	      						if (genres[artist_name] == null){
+	      							console.log(i);
+	      							$('#artists-list').append('<li class="artist">'+ artist_name +' <a class="btn-delete">&#10006;</a></li>');
+	      							genres[artist_name] = artist_items[i].genres;
+	      							artists[artist_name] = artist_items[i];
+	      							console.log(genres);
+	      							disableButtons();
+	      							$(".error-message").addClass( "hidden" );
+	      							break;
+	      						} else {
+			      					showErrorMessage('<b>Oops!</b> That artist is already on the list.');
+			      					console.log('already exist');
+			      					break;
+		      					}
+	      					} else {
+	      						showErrorMessage('<b>Oh no!</b> There’s no artist with that name. Make sure to enter the artist’s exact name.');
+	      						console.log('panic');
+	      					}
       					}
       					$('#input-artist').val("");
       				}
@@ -101,7 +114,7 @@
 				$("#btn-add").prop('disabled', false);
 			}
 
-			if ($('#artists-list li').length == 0) {
+			if ($('#artists-list li').length < 2) {
 				$("#btn-create").prop('disabled', true);
 			} else {
 				$("#btn-create").prop('disabled', false);
