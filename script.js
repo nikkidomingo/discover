@@ -59,32 +59,70 @@ function createPlaylist(){
 	var user = JSON.parse(localStorage['user']);
 	var genres = JSON.parse(localStorage['genres']);
 	var playlist = localStorage['playlist'] ? JSON.parse(localStorage['playlist']) : undefined;
-	var all_genres = [];
+	var all_genres = {};
 	var final_genres = [];
 	var final_tracks = [];
 	var ajaxList = [];
 
-	// iterate through genres and get one genre from each artist
-	for(var key in genres) {
-		var g = genres[key];
-		all_genres = all_genres.concat(g);
+	// iterate through genres and count the occurance of each genre
+	for(let key in genres) {
+		for(let i  in genres[key]){
+			var g = genres[key];
+			all_genres[genres[key][i]] = (all_genres[genres[key][i]] || 0) + 1;
+		}
+	}
+	console.log(all_genres);
+
+	// get genres that occur more than once and get 3
+	for (let i in all_genres){
+		if (all_genres[i] > 1){
+			final_genres = final_genres.concat(i);
+		}
 	}
 
-	// filter and select 5 genres
-	all_genres = all_genres.filter(function (el, i, arr){return arr.indexOf(el) === i;});
-	final_genres = selectRandom(5, all_genres);
+	if (final_genres.length > 3){
+		final_genres = selectRandom(3, final_genres);
+	}
+
+	console.log(final_genres);
+	console.log(final_genres.join());
 	localStorage['final_genres'] = JSON.stringify(final_genres);
+
+	getTracks(final_genres);
 
 	function getTracks(genre){
 		return $.ajax({
-	      	url: 'https://api.spotify.com/v1/search?q=genre%3A%22'+ final_genres[genre] +'%22+tag%3Ahipster&type=track',
+	      	url: 'https://api.spotify.com/v1/search?q=genre%3A%22'+ final_genres.join() +'%22+tag%3Ahipster&type=track',
+	      	// url: 'https://api.spotify.com/v1/search?q=genre%3A%22'+ final_genres.join() +'%22&type=track',
 	      	headers: {
 	      			'Authorization': 'Bearer ' + access_token
 	      	},
 	      	success: function(response){
-	      		var all_tracks = response.tracks.items;
-	      		var curr_tracks = selectRandom(5, all_tracks);
+	      		var curr_tracks = response.tracks.items;
 	      		final_tracks = final_tracks.concat(curr_tracks);
+
+				if (!playlist){
+					$.ajax({
+						url: 'https://api.spotify.com/v1/users/'+ user.id +'/playlists',
+						type: 'post',
+						dataType: 'json',
+						data: JSON.stringify({
+						 "description": "New playlist from Discover",
+						  "public": false,
+						  "name": "New Playlist from Discover"
+						}),
+						headers: {
+							'Authorization': 'Bearer ' + access_token
+						},
+						success: function(response){
+							console.log('created playlist');
+							localStorage['playlist'] = JSON.stringify(response);
+							addTracks();
+						}
+					});
+				} else {
+					replaceTracks();
+				}
 	   		}
 	  	});
 	}
@@ -114,8 +152,8 @@ function createPlaylist(){
 			success: function(response){
 				console.log('added tracks');
 				console.log(final_tracks_uris);
-				// window.location = "/playlist.html#access_token=" + access_token;
-				window.location = "https://nikkidomingo.github.io/discover/playlist.html#access_token=" + access_token;
+				window.location = "/playlist.html#access_token=" + access_token;
+				// window.location = "https://nikkidomingo.github.io/discover/playlist.html#access_token=" + access_token;
 			}
 		});
 	}
@@ -134,41 +172,10 @@ function createPlaylist(){
 			},
 			success: function(response){
 				console.log('replaced tracks');
-				// window.location = "/playlist.html#access_token=" + access_token;
-				window.location = "https://nikkidomingo.github.io/discover/playlist.html#access_token=" + access_token;
+				window.location = "/playlist.html#access_token=" + access_token;
+				// window.location = "https://nikkidomingo.github.io/discover/playlist.html#access_token=" + access_token;
 
 			}
 		});
 	}
-
-	for (g in final_genres) {
-		ajaxList = ajaxList.concat(getTracks(g));
-	}
-
-	$.when.apply($, ajaxList).then(function(){
-		console.log(final_tracks);
-
-		if (!playlist){
-			$.ajax({
-				url: 'https://api.spotify.com/v1/users/'+ user.id +'/playlists',
-				type: 'post',
-				dataType: 'json',
-				data: JSON.stringify({
-				 "description": "New playlist from Discover",
-				  "public": false,
-				  "name": "New Playlist from Discover"
-				}),
-				headers: {
-					'Authorization': 'Bearer ' + access_token
-				},
-				success: function(response){
-					console.log('created playlist');
-					localStorage['playlist'] = JSON.stringify(response);
-					addTracks();
-				}
-			});
-		} else {
-			replaceTracks();
-		}
-	});
 };
