@@ -212,6 +212,10 @@ li a:hover {
 	width: 90%;
 }
 
+#playlist {
+	margin: 15px 0;
+}
+
 .playlist {
 	padding:5%;
 	border: 5px solid #171662;
@@ -247,13 +251,8 @@ li a:hover {
 	vertical-align: top;
 }
 
-.featured:hover {
-	width:160px;
-}
-
-.img-crop:hover {
-	width:160px;
-	height:160px;
+.img-crop:hover:after {
+	background: rgba(23, 22, 98, 0);
 }
 
 .img-crop {
@@ -265,6 +264,17 @@ li a:hover {
     border-radius: 50%;
     overflow: hidden;
 	transition: all 0.2s linear;
+}
+
+.img-crop:after{
+    content: '';
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    top: 0;
+    left: 0;
+    background: rgba(23, 22, 98, 0.2);
+    transition: all 0.2s linear;
 }
 
 .img-crop img {

@@ -45,7 +45,8 @@
       	disableButtons();
 
       	// Add Artist to list
-      	$("form").submit(function() {
+      	$("form").submit(function(e) {
+      		e.preventDefault();
       		var artist = $('#input-artist').val();
       		console.log(artist);
       		$.ajax({

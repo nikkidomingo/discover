@@ -165,8 +165,8 @@ function createPlaylist(){
 			success: function(response){
 				console.log('added tracks');
 				console.log(final_tracks_uris);
-				window.location = "/playlist.html#access_token=" + access_token;
-				// window.location = "https://nikkidomingo.github.io/discover/playlist.html#access_token=" + access_token;
+				// window.location = "/playlist.html#access_token=" + access_token;
+				window.location = "https://nikkidomingo.github.io/discover/playlist.html#access_token=" + access_token;
 			}
 		});
 	}
@@ -185,8 +185,8 @@ function createPlaylist(){
 			},
 			success: function(response){
 				console.log('replaced tracks');
-				window.location = "/playlist.html#access_token=" + access_token;
-				// window.location = "https://nikkidomingo.github.io/discover/playlist.html#access_token=" + access_token;
+				// window.location = "/playlist.html#access_token=" + access_token;
+				window.location = "https://nikkidomingo.github.io/discover/playlist.html#access_token=" + access_token;
 
 			}
 		});
