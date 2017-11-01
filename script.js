@@ -30,7 +30,11 @@ if (!access_token) {
 		success: function(response) {
 			localStorage['user'] = JSON.stringify(response);
 			user = JSON.parse(localStorage['user']);
-			$('.welcome-title').append("Welcome, " + user.display_name + "." );
+			if (user){
+				$('.welcome-title').append("Welcome, " + user.display_name + "." );
+			} else {
+				$('.welcome-title').append("Welcome.");
+			}
 		}
 	});
 }

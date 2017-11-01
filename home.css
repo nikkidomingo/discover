@@ -72,6 +72,10 @@ p {
 	height: 50px;
 }
 
+#btn-create{
+	margin-bottom: 10px;
+}
+
 .btn:disabled {
 	background-color: #A2A2A2;
 	color: #f2f2f2;
