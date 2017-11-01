@@ -4,41 +4,41 @@ var genres = {};
 var artists = {};
 
 function getHashParams() {
-    var hashParams = {};
-    var e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
-    	while ( e = r.exec(q)) {
-    		hashParams[e[1]] = decodeURIComponent(e[2]);
-    	}
-    return hashParams;
+	var hashParams = {};
+	var e, r = /([^&;=]+)=?([^&;]*)/g,
+		q = window.location.hash.substring(1);
+		while ( e = r.exec(q)) {
+			hashParams[e[1]] = decodeURIComponent(e[2]);
+		}
+	return hashParams;
 }
 
 var params = getHashParams();
 
 var access_token = params.access_token,
-    state = params.state;
+	state = params.state;
 
 if (!access_token) {
-  	alert('There was an error during the authentication');
-  	window.location = "/";
+	alert('There was an error during the authentication');
+	window.location = "/";
 } else {
-    $.ajax({
-        url: 'https://api.spotify.com/v1/me',
-        headers: {
-          	'Authorization': 'Bearer ' + access_token
-        },
-        success: function(response) {
-        	console.log('success');
-        	localStorage['user'] = JSON.stringify(response);
-        	user = JSON.parse(localStorage['user']);
-        	$('.welcome-title').append("Welcome, " + user.display_name + "." );
-        }
-    });
+	$.ajax({
+		url: 'https://api.spotify.com/v1/me',
+		headers: {
+			'Authorization': 'Bearer ' + access_token
+		},
+		success: function(response) {
+			console.log('success');
+			localStorage['user'] = JSON.stringify(response);
+			user = JSON.parse(localStorage['user']);
+			$('.welcome-title').append("Welcome, " + user.display_name + "." );
+		}
+	});
 }
 
 function showErrorMessage(message){
 	$(".error-message").empty();
-  	$(".error-message").append(message);
+	$(".error-message").append(message);
 	$(".error-message").removeClass( "hidden" );
 }
 
@@ -47,11 +47,11 @@ function selectRandom(limit, source){
 	var destination = [];
 	for (i = 0; i < limit; i++) {
 
-	    var index = Math.floor((Math.random() * source.length));
+		var index = Math.floor((Math.random() * source.length));
 
-	    while(destination.includes(source[index])){
-	    	index = Math.floor((Math.random() * source.length));
-	    }
+		while(destination.includes(source[index])){
+			index = Math.floor((Math.random() * source.length));
+		}
 
 		destination = destination.concat(source[index]);
 	}
@@ -105,13 +105,13 @@ function createPlaylist(){
 
 	function getTracks(genre){
 		return $.ajax({
-	      	url: 'https://api.spotify.com/v1/search?q=genre%3A%22'+ final_genres.join() +'%22+tag%3Ahipster&type=track',
-	      	headers: {
-	      			'Authorization': 'Bearer ' + access_token
-	      	},
-	      	success: function(response){
-	      		var curr_tracks = response.tracks.items;
-	      		final_tracks = final_tracks.concat(curr_tracks);
+		url: 'https://api.spotify.com/v1/search?q=genre%3A%22'+ final_genres.join() +'%22+tag%3Ahipster&type=track',
+		headers: {
+			'Authorization': 'Bearer ' + access_token
+			},
+			success: function(response){
+				var curr_tracks = response.tracks.items;
+				final_tracks = final_tracks.concat(curr_tracks);
 
 				if (!playlist){
 					$.ajax({
@@ -119,9 +119,9 @@ function createPlaylist(){
 						type: 'post',
 						dataType: 'json',
 						data: JSON.stringify({
-						 "description": "Playlist from Discover",
-						  "public": false,
-						  "name": "Generated from nikkidomingo.github.io/discover."
+							"description": "Generated from nikkidomingo.github.io/discover.",
+							"public": false,
+							"name": "Playlist from Discover"
 						}),
 						headers: {
 							'Authorization': 'Bearer ' + access_token
@@ -135,8 +135,8 @@ function createPlaylist(){
 				} else {
 					replaceTracks();
 				}
-	   		}
-	  	});
+			}
+		});
 	}
 
 	function setUris(){
