@@ -20,7 +20,7 @@ var access_token = params.access_token,
 
 if (!access_token) {
 	alert('There was an error during the authentication');
-	window.location = "/";
+	window.location = "https://nikkidomingo.github.io/discover/";
 } else {
 	$.ajax({
 		url: 'https://api.spotify.com/v1/me',

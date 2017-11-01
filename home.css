@@ -116,13 +116,9 @@ p {
 
 .main-container{
 	height:80%;
-	min-height: 440px;
+	min-height: 100vh;
 	width:90%;
 	margin:auto;
-
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
 }
 
 .error-message {
@@ -131,6 +127,8 @@ p {
 	color: #CB5540;
 	padding: 10px 20px;
 	border-radius: 3px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 .hidden {
@@ -300,6 +298,14 @@ li a:hover {
 	color: #626262;
 }
 
+@media all and (min-height: 737px){
+	.main-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+}
+
 @media all and (min-width: 376px) {
 	.img-crop {
 		width: 150px;
@@ -315,6 +321,12 @@ li a:hover {
 	.nav-bar,
 	.main-container{
 		width:70%;
+	}
+
+	.main-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 	}
 }
 
