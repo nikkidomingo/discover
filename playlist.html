@@ -9,15 +9,14 @@
 		<div class="nav-bar-container">
 			<div class="nav-bar">
 				<h1>Discover</h1>
-				<!-- <button class="btn btn-blue">Log out</button> -->
-				<a href="https://www.spotify.com/logout/" class="btn btn-blue">Log out</a>
+				<div class="credit">&#169; Nikki Domingo</div>
 			</div>
 		</div>
 
 		<div class="main-playlist-container">
 			<div class="playlist-container">
 				<div class="playlist-title">
-					<h2>Here is your new playlist.</h2>
+					<h2>Here's your playlist.</h2>
 					<p class="playlist-desc">Your playlist is automatically saved on your Spotify account.</p>
 					<div id="playlist"></div>
 					<button id="btn-new-playlist" class="btn btn-blue">Create New Playlist</button>
@@ -94,6 +93,8 @@
 
 		$('#btn-new-playlist').click(function(){
 			window.location = "https://nikkidomingo.github.io/discover/home.html#access_token=" + access_token;
+			// window.location = "/home.html#access_token=" + access_token;
+
 		});
 
 		console.log(user);

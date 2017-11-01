@@ -106,7 +106,6 @@ function createPlaylist(){
 	function getTracks(genre){
 		return $.ajax({
 	      	url: 'https://api.spotify.com/v1/search?q=genre%3A%22'+ final_genres.join() +'%22+tag%3Ahipster&type=track',
-	      	// url: 'https://api.spotify.com/v1/search?q=genre%3A%22'+ final_genres.join() +'%22&type=track',
 	      	headers: {
 	      			'Authorization': 'Bearer ' + access_token
 	      	},
@@ -120,9 +119,9 @@ function createPlaylist(){
 						type: 'post',
 						dataType: 'json',
 						data: JSON.stringify({
-						 "description": "New playlist from Discover",
+						 "description": "Playlist from Discover",
 						  "public": false,
-						  "name": "New Playlist from Discover"
+						  "name": "Generated from nikkidomingo.github.io/discover."
 						}),
 						headers: {
 							'Authorization': 'Bearer ' + access_token
