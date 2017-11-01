@@ -77,7 +77,6 @@
 					'Authorization': 'Bearer ' + access_token
 				},
 				success: function(response){
-					console.log(response);
 					let img_src = response.images[0];
 					let link = response.external_urls.spotify;
 					let artist_name = response.name;
@@ -96,12 +95,5 @@
 			// window.location = "/home.html#access_token=" + access_token;
 
 		});
-
-		console.log(user);
-		console.log(genres);
-		console.log(final_genres);
-		console.log(playlist);
-		console.log(artists);
-		console.log(playlist_artists);
 	</script>
 </html>

@@ -13,7 +13,6 @@
 		</div>
 
 		<div class="main-container">
-
 			<div class="error-message hidden">
 				<span class="btn-close">&#10006;</span>
 				<b>Oh no!</b> There’s no artist with that name. Make sure to enter the artist’s exact name.
@@ -34,53 +33,44 @@
 			</div>
 
 			<button id="btn-create" class="btn btn-blue">Create Playlist</button>
-
 		</div>
 	</body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="script.js"></script>
 	<script>
-
+		
 		disableButtons();
 		
 		// Add Artist to list
 		$("form").submit(function(e) {
 			e.preventDefault();
 			var artist = $('#input-artist').val();
-			console.log(artist);
 			$.ajax({
 				url: 'https://api.spotify.com/v1/search?q='+ artist +'&type=artist',
 				headers: {
 					'Authorization': 'Bearer ' + access_token
 				},
 				success: function(response){
-					console.log(response);
 					var artist_items = response.artists.items;
 					if (artist_items.length == 0) {
 						showErrorMessage('<b>Oh no!</b> There’s no artist with that name. Make sure to enter the artist’s exact name.');
-						console.log('null');
 					} else {
 						for (i in artist_items) {
-							console.log(artist_items[i]);
 							let artist_name = artist_items[i].name;
 							if (artist_name.toUpperCase() == artist.toUpperCase()){
 									if (genres[artist_name] == null){
-										console.log(i);
 									$('#artists-list').append('<li class="artist">'+ artist_name +' <a class="btn-delete">&#10006;</a></li>');
 									genres[artist_name] = artist_items[i].genres;
 									artists[artist_name] = artist_items[i];
-									console.log(genres);
 									disableButtons();
 									$(".error-message").addClass( "hidden" );
 									break;
 								} else {
 									showErrorMessage('<b>Oops!</b> That artist is already on the list.');
-										console.log('already exist');
 									break;
 								}
 							} else {
 								showErrorMessage('<b>Oh no!</b> There’s no artist with that name. Make sure to enter the artist’s exact name.');
-								console.log('panic');
 							}
 						}
 						$('#input-artist').val("");
@@ -94,7 +84,6 @@
 			var artist_name = ($(this).closest('li').text()).replace(' ✖','');
 			delete genres[artist_name];
 			delete artists[artist_name];
-			console.log(genres);
 			$(this).closest('li').remove();
 
 			disableButtons();

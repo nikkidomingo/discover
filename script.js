@@ -28,7 +28,6 @@ if (!access_token) {
 			'Authorization': 'Bearer ' + access_token
 		},
 		success: function(response) {
-			console.log('success');
 			localStorage['user'] = JSON.stringify(response);
 			user = JSON.parse(localStorage['user']);
 			$('.welcome-title').append("Welcome, " + user.display_name + "." );
@@ -77,7 +76,6 @@ function createPlaylist(){
 			all_genres[genres[key][i]] = (all_genres[genres[key][i]] || 0) + 1;
 		}
 	}
-	console.log(all_genres);
 
 	// get genres that occur more than once and get 3
 	for (let i in all_genres){
@@ -96,8 +94,6 @@ function createPlaylist(){
 			final_genres = selectRandom(3, final_genres);
 		}
 
-		console.log(final_genres);
-		console.log(final_genres.join());
 		localStorage['final_genres'] = JSON.stringify(final_genres);
 
 		getTracks(final_genres);
@@ -127,7 +123,6 @@ function createPlaylist(){
 							'Authorization': 'Bearer ' + access_token
 						},
 						success: function(response){
-							console.log('created playlist');
 							localStorage['playlist'] = JSON.stringify(response);
 							addTracks();
 						}
@@ -162,8 +157,6 @@ function createPlaylist(){
 				'Authorization': 'Bearer ' + access_token
 			},
 			success: function(response){
-				console.log('added tracks');
-				console.log(final_tracks_uris);
 				// window.location = "/playlist.html#access_token=" + access_token;
 				window.location = "https://nikkidomingo.github.io/discover/playlist.html#access_token=" + access_token;
 			}
@@ -183,7 +176,6 @@ function createPlaylist(){
 				'Authorization': 'Bearer ' + access_token
 			},
 			success: function(response){
-				console.log('replaced tracks');
 				// window.location = "/playlist.html#access_token=" + access_token;
 				window.location = "https://nikkidomingo.github.io/discover/playlist.html#access_token=" + access_token;
 

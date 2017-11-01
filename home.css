@@ -116,11 +116,13 @@ p {
 
 .main-container{
 	height:80%;
+	min-height: 440px;
 	width:90%;
 	margin:auto;
+
 	display: flex;
 	flex-direction: column;
-  	justify-content: center;
+	justify-content: center;
 }
 
 .error-message {
@@ -196,7 +198,6 @@ li a:hover {
 
 .playlist-title {
 	margin:20px 0;
-	/*max-width: 300px;*/
 }
 
 .playlist-title h2 {

@@ -25,6 +25,7 @@
 		}
 
 		document.getElementById('btn-login').addEventListener('click', function() {
+			localStorage.removeItem('playlist');
 			var client_id = '81e5851e3ad2464a941fdd04636a647a';
 			// var redirect_uri = 'http://localhost:3000/home.html';
 			var redirect_uri = 'https://nikkidomingo.github.io/discover/home.html';
