@@ -30,7 +30,7 @@ if (!access_token) {
 		success: function(response) {
 			localStorage['user'] = JSON.stringify(response);
 			user = JSON.parse(localStorage['user']);
-			if (user){
+			if (user.display_name){
 				$('.welcome-title').append("Welcome, " + user.display_name + "." );
 			} else {
 				$('.welcome-title').append("Welcome.");
