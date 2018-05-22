@@ -1,0 +1,31 @@
+.welcome {
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.welcome-logo{
+  margin: 0;
+
+  font-size: 3em;
+  font-weight: 800;
+  font-style: italic;
+
+  text-transform: uppercase;
+  color: var(--color-navy);
+  text-shadow: 2px 3px 1px var(--color-pink);
+}
+
+.welcome-desc {
+  margin: 0;
+}
+
+.welcome .btn-sign-in{
+  background-color: var(--color-pink);
+  color: white;
+
+  margin: 25px 0;
+}
